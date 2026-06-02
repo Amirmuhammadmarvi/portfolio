@@ -1,0 +1,101 @@
+.section {
+  padding: 7rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.eduGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.eduCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.eduCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+}
+.eduCard:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+}
+
+.eduPeriod {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent2);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.8rem;
+}
+.eduDegree {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+.eduSchool {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.eduLocation {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-bottom: 0.8rem;
+}
+.eduNote {
+  font-size: 0.82rem;
+  color: var(--muted2);
+  line-height: 1.7;
+}
+
+.subTitle {
+  font-family: var(--display);
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.certGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.8rem;
+}
+
+.certCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.certCard:hover {
+  border-color: var(--border2);
+  transform: translateX(4px);
+}
+.certIcon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }
+.certName { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+.certSub { font-size: 0.78rem; color: var(--muted2); line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .section { padding: 5rem 1.5rem; }
+  .eduGrid, .certGrid { grid-template-columns: 1fr; }
+}
