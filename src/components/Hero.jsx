@@ -4,9 +4,7 @@ import styles from './Hero.module.css'
 
 function GlitchText({ text }) {
   return (
-    <span className={styles.glitch} data-text={text}>
-      {text}
-    </span>
+    <span className={styles.glitch} data-text={text}>{text}</span>
   )
 }
 
@@ -39,38 +37,29 @@ function TypedRole() {
   )
 }
 
-// Subtle particle network — not matrix, just connected dots
 function ParticleCanvas() {
   const canvasRef = useRef(null)
-
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     let animId, w, h, particles
-
     const resize = () => {
       w = canvas.width = window.innerWidth
       h = canvas.height = window.innerHeight
       particles = Array.from({ length: 55 }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        size: Math.random() * 1.2 + 0.3,
-        opacity: Math.random() * 0.4 + 0.1,
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+        size: Math.random() * 1.2 + 0.3, opacity: Math.random() * 0.4 + 0.1,
       }))
     }
-
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
       particles.forEach(p => {
         p.x += p.vx; p.y += p.vy
         if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
         if (p.y < 0) p.y = h; if (p.y > h) p.y = 0
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(0,230,118,${p.opacity})`
-        ctx.fill()
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(0,230,118,${p.opacity})`; ctx.fill()
       })
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -82,21 +71,80 @@ function ParticleCanvas() {
             ctx.moveTo(particles[i].x, particles[i].y)
             ctx.lineTo(particles[j].x, particles[j].y)
             ctx.strokeStyle = `rgba(0,230,118,${0.07 * (1 - dist / 120)})`
-            ctx.lineWidth = 0.5
-            ctx.stroke()
+            ctx.lineWidth = 0.5; ctx.stroke()
           }
         }
       }
       animId = requestAnimationFrame(draw)
     }
-
-    resize()
-    draw()
+    resize(); draw()
     window.addEventListener('resize', resize)
     return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
   }, [])
-
   return <canvas ref={canvasRef} className={styles.canvas} />
+}
+
+// Animated terminal card for the right side
+const terminalLines = [
+  { delay: 0,    type: 'prompt', text: 'nmap -sV -O target.local' },
+  { delay: 900,  type: 'out',    text: 'Starting Nmap 7.94...' },
+  { delay: 1600, type: 'out',    text: 'Scanning 192.168.1.1...' },
+  { delay: 2400, type: 'ok',     text: '23 open ports discovered' },
+  { delay: 3100, type: 'prompt', text: 'nikto -h http://target.local' },
+  { delay: 4000, type: 'out',    text: 'Running web scan...' },
+  { delay: 4700, type: 'warn',   text: 'phpMyAdmin exposed — CRITICAL' },
+  { delay: 5400, type: 'ok',     text: '18 vulnerabilities found' },
+  { delay: 6200, type: 'prompt', text: 'python3 scanner.py --url $URL' },
+  { delay: 7000, type: 'ok',     text: '[XSS] Reflected payload confirmed' },
+  { delay: 7700, type: 'ok',     text: '[SQLi] Error-based injection found' },
+  { delay: 8400, type: 'out',    text: 'Report saved → audit.json' },
+  { delay: 9200, type: 'prompt', text: '' },
+]
+
+function TerminalCard() {
+  const [visible, setVisible] = useState(0)
+
+  useEffect(() => {
+    const timers = terminalLines.map((line, i) =>
+      setTimeout(() => setVisible(i + 1), line.delay)
+    )
+    // loop: reset after last line + pause
+    const reset = setTimeout(() => setVisible(0), 11000)
+    return () => { timers.forEach(clearTimeout); clearTimeout(reset) }
+  }, [visible === 0 ? visible : -1]) // re-run when reset to 0
+
+  // restart loop
+  useEffect(() => {
+    if (visible !== 0) return
+    const t = setTimeout(() => setVisible(1), 300)
+    return () => clearTimeout(t)
+  }, [visible])
+
+  return (
+    <div className={styles.terminal}>
+      <div className={styles.termHeader}>
+        <div className={styles.termDots}>
+          <span className={styles.dot1} />
+          <span className={styles.dot2} />
+          <span className={styles.dot3} />
+        </div>
+        <span className={styles.termTitle}>security_scan.sh</span>
+        <span className={styles.termLive}>● LIVE</span>
+      </div>
+      <div className={styles.termBody}>
+        {terminalLines.slice(0, visible).map((line, i) => (
+          <div key={i} className={`${styles.termLine} ${styles[`t_${line.type}`]}`}>
+            {line.type === 'prompt' && <span className={styles.termPrompt}>root@kali:~$&nbsp;</span>}
+            {line.type !== 'prompt' && <span className={styles.termIndent} />}
+            <span>{line.text}</span>
+            {i === visible - 1 && line.type === 'prompt' && (
+              <span className={styles.termCursor}>█</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default function Hero() {
@@ -104,42 +152,45 @@ export default function Hero() {
     <section id="hero" className={styles.hero}>
       <ParticleCanvas />
 
-      <div className={styles.content}>
-        <div className={styles.badge}>
-          <span className={styles.badgeDot} />
-          Available for opportunities
+      <div className={styles.layout}>
+        <div className={styles.content}>
+          <div className={styles.badge}>
+            <span className={styles.badgeDot} />
+            Available for opportunities
+          </div>
+
+          <h1 className={styles.name}>
+            <span className={styles.nameFirst}>{data.name.first}</span>
+            <br />
+            <GlitchText text={data.name.last} />
+          </h1>
+
+          <p className={styles.role}><TypedRole /></p>
+          <p className={styles.summary}>{data.summary}</p>
+
+          <div className={styles.actions}>
+            <a href="#projects" className={styles.btnPrimary}
+              onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}>
+              View My Work
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="mailto:amirmuhammadmarvi@gmail.com" className={styles.btnSecondary}>
+              Get In Touch
+            </a>
+          </div>
+
+          <div className={styles.stats}>
+            {data.stats.map(s => (
+              <div key={s.label} className={styles.stat}>
+                <span className={styles.statVal}>{s.value}</span>
+                <span className={styles.statLabel}>{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <h1 className={styles.name}>
-          <span className={styles.nameFirst}>{data.name.first}</span>
-          <br />
-          <GlitchText text={data.name.last} />
-        </h1>
-
-        <p className={styles.role}>
-          <TypedRole />
-        </p>
-
-        <p className={styles.summary}>{data.summary}</p>
-
-        <div className={styles.actions}>
-          <a href="#projects" className={styles.btnPrimary}
-            onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}>
-            View My Work
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="mailto:amirmuhammadmarvi@gmail.com" className={styles.btnSecondary}>
-            Get In Touch
-          </a>
-        </div>
-
-        <div className={styles.stats}>
-          {data.stats.map(s => (
-            <div key={s.label} className={styles.stat}>
-              <span className={styles.statVal}>{s.value}</span>
-              <span className={styles.statLabel}>{s.label}</span>
-            </div>
-          ))}
+        <div className={styles.right}>
+          <TerminalCard />
         </div>
       </div>
 

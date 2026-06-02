@@ -13,12 +13,116 @@
   opacity: 0.5;
 }
 
-.content {
+/* Two-column layout */
+.layout {
   position: relative;
   z-index: 1;
-  max-width: 780px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 4rem;
+  align-items: center;
 }
 
+.content { max-width: 680px; }
+
+/* ── right side ── */
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── terminal card ── */
+.terminal {
+  width: 100%;
+  background: #060e08;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(0,230,118,0.08),
+    0 0 40px rgba(0,230,118,0.06);
+  animation: fadeLeft 0.8s ease 0.6s both;
+}
+
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.termHeader {
+  background: #0a1a0e;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--border2);
+}
+.termDots { display: flex; gap: 5px; }
+.dot1, .dot2, .dot3 { width: 10px; height: 10px; border-radius: 50%; }
+.dot1 { background: #ff5f57; }
+.dot2 { background: #febc2e; }
+.dot3 { background: #28c840; }
+.termTitle {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted2);
+  margin-left: 0.4rem;
+  flex: 1;
+}
+.termLive {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.termBody {
+  padding: 1.1rem 1.2rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 2;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.termLine {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  animation: lineIn 0.2s ease both;
+}
+@keyframes lineIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.termPrompt { color: var(--accent); white-space: nowrap; }
+.termIndent { display: inline-block; width: 1.2rem; flex-shrink: 0; }
+
+.t_out   span:last-child { color: var(--muted2); }
+.t_ok    span:last-child { color: var(--accent); }
+.t_warn  span:last-child { color: #ff6b6b; }
+.t_prompt span:last-child { color: var(--text); }
+
+.termCursor {
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+  font-size: 0.7rem;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── left content ── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -38,25 +142,22 @@
   width: 6px; height: 6px;
   background: var(--accent);
   border-radius: 50%;
-  animation: pulse 2s ease infinite;
+  animation: pulseDot 2s ease infinite;
 }
-@keyframes pulse {
+@keyframes pulseDot {
   0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,230,118,0.5); }
   50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(0,230,118,0); }
 }
 
 .name {
   font-family: var(--display);
-  font-size: clamp(3.8rem, 9vw, 8.5rem);
+  font-size: clamp(3.5rem, 7vw, 7.5rem);
   line-height: 0.95;
   letter-spacing: 0.02em;
   margin-bottom: 1rem;
   animation: fadeUp 0.7s ease 0.1s both;
 }
-.nameFirst {
-  color: var(--text);
-  display: block;
-}
+.nameFirst { color: var(--text); display: block; }
 
 .glitch {
   color: var(--accent);
@@ -64,8 +165,7 @@
   display: inline-block;
   text-shadow: 0 0 30px rgba(0,230,118,0.3);
 }
-.glitch::before,
-.glitch::after {
+.glitch::before, .glitch::after {
   content: attr(data-text);
   position: absolute;
   inset: 0;
@@ -95,23 +195,19 @@
 
 .role {
   font-family: var(--mono);
-  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
   color: var(--muted2);
   margin-bottom: 1.5rem;
-  min-height: 2rem;
+  min-height: 1.8rem;
   animation: fadeUp 0.7s ease 0.2s both;
 }
 .typed { color: var(--accent2); }
-.cursor {
-  color: var(--accent);
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
+.cursor { color: var(--accent); animation: blink 1s step-end infinite; }
 
 .summary {
-  font-size: 0.97rem;
+  font-size: 0.95rem;
   color: var(--muted2);
-  max-width: 560px;
+  max-width: 540px;
   line-height: 1.85;
   margin-bottom: 2.5rem;
   animation: fadeUp 0.7s ease 0.3s both;
@@ -172,7 +268,7 @@
 
 .stats {
   display: flex;
-  gap: 3rem;
+  gap: 2.5rem;
   flex-wrap: wrap;
   padding-top: 2.5rem;
   border-top: 1px solid var(--border);
@@ -181,13 +277,13 @@
 .stat { display: flex; flex-direction: column; gap: 0.2rem; }
 .statVal {
   font-family: var(--display);
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   color: var(--accent);
   line-height: 1;
   letter-spacing: 0.03em;
 }
 .statLabel {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--muted2);
   font-family: var(--mono);
   letter-spacing: 0.06em;
@@ -201,6 +297,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
+  z-index: 1;
   animation: fadeUp 1s ease 1s both;
 }
 .scrollLine {
@@ -209,9 +306,9 @@
   animation: scrollAnim 2s ease infinite;
 }
 @keyframes scrollAnim {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform: scaleY(1); transform-origin: bottom; }
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 .scrollText {
@@ -225,13 +322,19 @@
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(22px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Responsive — stack on mobile */
+@media (max-width: 1024px) {
+  .layout { grid-template-columns: 1fr; }
+  .right { display: none; }
+  .name { font-size: clamp(3.5rem, 10vw, 7rem); }
+}
 @media (max-width: 768px) {
   .hero { padding: 7rem 1.5rem 4rem; }
   .stats { gap: 2rem; }
