@@ -1,15 +1,18 @@
 .reveal {
   opacity: 0;
   transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+              transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter 0.7s ease;
+  filter: brightness(0.5);
 }
 
-.up    { transform: translateY(32px); }
-.left  { transform: translateX(-32px); }
-.right { transform: translateX(32px); }
-.scale { transform: scale(0.95); }
+.up    { transform: translateY(28px); }
+.left  { transform: translateX(-28px); }
+.right { transform: translateX(28px); }
+.scale { transform: scale(0.96); }
 
 .visible {
   opacity: 1;
   transform: none;
+  filter: brightness(1);
 }

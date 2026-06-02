@@ -11,19 +11,18 @@
   align-items: start;
 }
 
-.left {}
-
 .p {
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   color: var(--muted2);
-  line-height: 1.9;
+  line-height: 2;
   margin-bottom: 1.2rem;
+  font-family: var(--mono);
 }
-.p strong { color: var(--text); font-weight: 500; }
+.p strong { color: var(--accent); font-weight: 400; }
 
 .langRow {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.6rem;
   margin-top: 2rem;
   flex-wrap: wrap;
 }
@@ -33,20 +32,22 @@
   align-items: center;
   gap: 0.2rem;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.8rem 1.2rem;
-  transition: border-color 0.2s;
+  border: 1px solid var(--border2);
+  padding: 0.7rem 1.1rem;
+  transition: all 0.2s;
 }
-.langCard:hover { border-color: var(--border2); }
-.langFlag { font-size: 1.4rem; }
-.langName { font-size: 0.82rem; font-weight: 500; color: var(--text); }
-.langLevel { font-size: 0.68rem; color: var(--muted); font-family: var(--mono); }
+.langCard:hover {
+  border-color: var(--accent2);
+  box-shadow: 0 0 10px rgba(0,255,65,0.1);
+}
+.langFlag { font-size: 1.3rem; }
+.langName { font-size: 0.75rem; font-weight: 400; color: var(--text); font-family: var(--mono); }
+.langLevel { font-size: 0.62rem; color: var(--muted2); font-family: var(--mono); }
 
 .right {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.5rem;
 }
 
 .card {
@@ -55,29 +56,37 @@
   gap: 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.9rem 1.2rem;
-  transition: border-color 0.25s, transform 0.25s;
+  padding: 0.8rem 1.1rem;
+  transition: all 0.25s;
+  position: relative;
 }
-.card:hover {
-  border-color: var(--border2);
-  transform: translateX(4px);
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--border2);
+  transition: background 0.2s;
 }
-.cardIcon { font-size: 1.1rem; flex-shrink: 0; }
+.card:hover { border-color: var(--border2); }
+.card:hover::before { background: var(--accent); box-shadow: var(--glow-sm); }
+
+.cardIcon { font-size: 1rem; flex-shrink: 0; filter: grayscale(0.3); }
 .cardLabel {
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .cardValue {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text);
   text-decoration: none;
+  font-family: var(--mono);
   transition: color 0.2s;
 }
-a.cardValue:hover { color: var(--accent); }
+a.cardValue:hover { color: var(--accent); text-shadow: var(--glow-sm); }
 
 @media (max-width: 768px) {
   .section { padding: 5rem 1.5rem; }

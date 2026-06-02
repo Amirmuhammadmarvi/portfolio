@@ -19,13 +19,12 @@ function TypedRole() {
   useEffect(() => {
     const target = roles[idx]
     let timeout
-
     if (!deleting && displayed.length < target.length) {
-      timeout = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 70)
+      timeout = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 60)
     } else if (!deleting && displayed.length === target.length) {
-      timeout = setTimeout(() => setDeleting(true), 2200)
+      timeout = setTimeout(() => setDeleting(true), 2500)
     } else if (deleting && displayed.length > 0) {
-      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40)
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 30)
     } else if (deleting && displayed.length === 0) {
       setDeleting(false)
       setIdx((idx + 1) % roles.length)
@@ -35,64 +34,52 @@ function TypedRole() {
 
   return (
     <span className={styles.typed}>
-      {displayed}<span className={styles.cursor}>|</span>
+      <span className={styles.prompt}>root@fsociety:~$ </span>
+      {displayed}<span className={styles.cursor}>█</span>
     </span>
   )
 }
 
-export default function Hero() {
+// Matrix rain canvas
+function MatrixCanvas() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     let animId
-    let w, h, particles
+    let w, h, cols, drops
+
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?'
 
     const resize = () => {
       w = canvas.width = window.innerWidth
       h = canvas.height = window.innerHeight
-      init()
-    }
-
-    const init = () => {
-      particles = Array.from({ length: 60 }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 1.5 + 0.3,
-        opacity: Math.random() * 0.5 + 0.1,
-      }))
+      cols = Math.floor(w / 20)
+      drops = Array(cols).fill(1).map(() => Math.random() * -50)
     }
 
     const draw = () => {
-      ctx.clearRect(0, 0, w, h)
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy
-        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
-        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(232,255,71,${p.opacity})`
-        ctx.fill()
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+      ctx.fillRect(0, 0, w, h)
+
+      drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)]
+        const x = i * 20
+
+        // Lead char — bright white-green
+        ctx.fillStyle = '#ccffcc'
+        ctx.font = '13px "Share Tech Mono"'
+        ctx.fillText(char, x, y * 20)
+
+        // Trail
+        ctx.fillStyle = Math.random() > 0.95 ? '#00ff41' : '#003300'
+        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, (y - 1) * 20)
+
+        if (y * 20 > h && Math.random() > 0.975) drops[i] = 0
+        drops[i] += 0.5
       })
-      // draw connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 130) {
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(232,255,71,${0.06 * (1 - dist / 130)})`
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
-        }
-      }
+
       animId = requestAnimationFrame(draw)
     }
 
@@ -102,21 +89,28 @@ export default function Hero() {
     return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
   }, [])
 
+  return <canvas ref={canvasRef} className={styles.matrix} />
+}
+
+export default function Hero() {
   return (
     <section id="hero" className={styles.hero}>
-      <canvas ref={canvasRef} className={styles.canvas} />
+      <MatrixCanvas />
+      <div className={styles.overlay} />
 
       <div className={styles.content}>
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
-          Available for opportunities
+          <span>// SYSTEM ONLINE — AVAILABLE FOR OPPORTUNITIES</span>
         </div>
 
-        <h1 className={styles.name}>
-          <span className={styles.nameFirst}>{data.name.first}</span>
-          <br />
-          <GlitchText text={data.name.last} />
-        </h1>
+        <div className={styles.nameBlock}>
+          <span className={styles.nameLabel}>{'> IDENTIFIED:'}</span>
+          <h1 className={styles.name}>
+            <span className={styles.nameFirst}>{data.name.first}</span>
+            <GlitchText text={data.name.last} />
+          </h1>
+        </div>
 
         <p className={styles.role}>
           <TypedRole />
@@ -127,11 +121,10 @@ export default function Hero() {
         <div className={styles.actions}>
           <a href="#projects" className={styles.btnPrimary}
             onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}>
-            View My Work
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span className={styles.btnPrefix}>./</span>view_projects.sh
           </a>
           <a href="mailto:amirmuhammadmarvi@gmail.com" className={styles.btnSecondary}>
-            Get In Touch
+            <span className={styles.btnPrefix}>ssh</span> get_in_touch
           </a>
         </div>
 
@@ -139,7 +132,7 @@ export default function Hero() {
           {data.stats.map(s => (
             <div key={s.label} className={styles.stat}>
               <span className={styles.statVal}>{s.value}</span>
-              <span className={styles.statLabel}>{s.label}</span>
+              <span className={styles.statLabel}>// {s.label}</span>
             </div>
           ))}
         </div>
@@ -147,7 +140,7 @@ export default function Hero() {
 
       <div className={styles.scroll}>
         <div className={styles.scrollLine} />
-        <span className={styles.scrollText}>Scroll</span>
+        <span className={styles.scrollText}>scroll</span>
       </div>
     </section>
   )

@@ -1,8 +1,8 @@
 .section {
   padding: 7rem 0;
   background: var(--bg2);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
 }
 .inner {
   max-width: 1100px;
@@ -12,7 +12,7 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 210px 1fr;
   gap: 2rem;
   align-items: start;
 }
@@ -22,7 +22,7 @@
 .tabs {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.2rem;
   position: sticky;
   top: 6rem;
 }
@@ -30,41 +30,58 @@
 .tab {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.6rem;
   background: none;
   border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 0.9rem;
   color: var(--muted2);
-  font-family: var(--body);
-  font-size: 0.88rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
   cursor: none;
   transition: all 0.2s;
-  position: relative;
   text-align: left;
   width: 100%;
+  letter-spacing: 0.04em;
+  position: relative;
 }
-.tab:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
+.tab::before {
+  content: '> ';
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tab:hover { color: var(--text); background: var(--surface); border-color: var(--border2); }
+.tab:hover::before { opacity: 0.5; }
 .tabActive {
   color: var(--accent) !important;
-  background: rgba(232,255,71,0.06) !important;
-  border-color: rgba(232,255,71,0.2) !important;
+  background: rgba(0,255,65,0.04) !important;
+  border-color: var(--border2) !important;
+  border-left-color: var(--accent) !important;
 }
-.tabIcon { font-size: 1rem; }
+.tabActive::before { opacity: 1 !important; }
+.tabIcon { font-size: 0.95rem; }
 .tabIndicator {
   position: absolute;
-  right: 1rem;
-  width: 6px; height: 6px;
+  right: 0.8rem;
+  width: 4px; height: 4px;
   background: var(--accent);
-  border-radius: 50%;
+  box-shadow: var(--glow-sm);
 }
 
 .panel {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  border: 1px solid var(--border2);
   padding: 2rem;
-  min-height: 220px;
+  min-height: 200px;
+  position: relative;
+}
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.5;
 }
 
 .panelHeader {
@@ -72,50 +89,50 @@
   align-items: center;
   gap: 0.8rem;
   margin-bottom: 1.5rem;
-  padding-bottom: 1.2rem;
-  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border2);
 }
-.panelIcon { font-size: 1.3rem; }
+.panelIcon { font-size: 1.1rem; }
 .panelTitle {
   font-family: var(--display);
-  font-size: 1.4rem;
-  letter-spacing: 0.05em;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
   color: var(--text);
 }
 .panelCount {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--muted);
+  font-size: 0.62rem;
+  color: var(--muted2);
   background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   padding: 0.2rem 0.6rem;
-  border-radius: 100px;
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 .tag {
   font-family: var(--mono);
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   color: var(--muted2);
   background: var(--surface2);
   border: 1px solid var(--border);
-  padding: 0.4rem 0.9rem;
-  border-radius: 2px;
+  padding: 0.35rem 0.8rem;
   transition: all 0.2s;
-  animation: tagIn 0.3s ease both;
+  animation: tagIn 0.25s ease both;
+  letter-spacing: 0.04em;
 }
 .tag:hover {
   color: var(--accent);
-  border-color: rgba(232,255,71,0.35);
-  background: rgba(232,255,71,0.04);
+  border-color: var(--border2);
+  background: rgba(0,255,65,0.04);
+  box-shadow: 0 0 8px rgba(0,255,65,0.1);
 }
 @keyframes tagIn {
-  from { opacity: 0; transform: scale(0.9); }
+  from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
 
@@ -123,6 +140,6 @@
   .inner { padding: 0 1.5rem; }
   .layout { grid-template-columns: 1fr; }
   .tabs { flex-direction: row; flex-wrap: wrap; position: static; }
-  .tab { flex: 1; justify-content: center; min-width: 100px; }
+  .tab { flex: 1; justify-content: center; min-width: 90px; font-size: 0.7rem; }
   .tabIndicator { display: none; }
 }
