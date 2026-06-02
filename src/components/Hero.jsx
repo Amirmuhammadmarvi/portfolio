@@ -20,12 +20,12 @@ function TypedRole() {
     const target = roles[idx]
     let timeout
     if (!deleting && displayed.length < target.length) {
-      timeout = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 60)
+      timeout = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 65)
     } else if (!deleting && displayed.length === target.length) {
-      timeout = setTimeout(() => setDeleting(true), 2500)
+      timeout = setTimeout(() => setDeleting(true), 2400)
     } else if (deleting && displayed.length > 0) {
-      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 30)
-    } else if (deleting && displayed.length === 0) {
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35)
+    } else {
       setDeleting(false)
       setIdx((idx + 1) % roles.length)
     }
@@ -34,52 +34,59 @@ function TypedRole() {
 
   return (
     <span className={styles.typed}>
-      <span className={styles.prompt}>root@fsociety:~$ </span>
-      {displayed}<span className={styles.cursor}>█</span>
+      {displayed}<span className={styles.cursor}>|</span>
     </span>
   )
 }
 
-// Matrix rain canvas
-function MatrixCanvas() {
+// Subtle particle network — not matrix, just connected dots
+function ParticleCanvas() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
-    let animId
-    let w, h, cols, drops
-
-    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?'
+    let animId, w, h, particles
 
     const resize = () => {
       w = canvas.width = window.innerWidth
       h = canvas.height = window.innerHeight
-      cols = Math.floor(w / 20)
-      drops = Array(cols).fill(1).map(() => Math.random() * -50)
+      particles = Array.from({ length: 55 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        size: Math.random() * 1.2 + 0.3,
+        opacity: Math.random() * 0.4 + 0.1,
+      }))
     }
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
-      ctx.fillRect(0, 0, w, h)
-
-      drops.forEach((y, i) => {
-        const char = chars[Math.floor(Math.random() * chars.length)]
-        const x = i * 20
-
-        // Lead char — bright white-green
-        ctx.fillStyle = '#ccffcc'
-        ctx.font = '13px "Share Tech Mono"'
-        ctx.fillText(char, x, y * 20)
-
-        // Trail
-        ctx.fillStyle = Math.random() > 0.95 ? '#00ff41' : '#003300'
-        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, (y - 1) * 20)
-
-        if (y * 20 > h && Math.random() > 0.975) drops[i] = 0
-        drops[i] += 0.5
+      ctx.clearRect(0, 0, w, h)
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy
+        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
+        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(0,230,118,${p.opacity})`
+        ctx.fill()
       })
-
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 120) {
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.strokeStyle = `rgba(0,230,118,${0.07 * (1 - dist / 120)})`
+            ctx.lineWidth = 0.5
+            ctx.stroke()
+          }
+        }
+      }
       animId = requestAnimationFrame(draw)
     }
 
@@ -89,28 +96,25 @@ function MatrixCanvas() {
     return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
   }, [])
 
-  return <canvas ref={canvasRef} className={styles.matrix} />
+  return <canvas ref={canvasRef} className={styles.canvas} />
 }
 
 export default function Hero() {
   return (
     <section id="hero" className={styles.hero}>
-      <MatrixCanvas />
-      <div className={styles.overlay} />
+      <ParticleCanvas />
 
       <div className={styles.content}>
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
-          <span>// SYSTEM ONLINE — AVAILABLE FOR OPPORTUNITIES</span>
+          Available for opportunities
         </div>
 
-        <div className={styles.nameBlock}>
-          <span className={styles.nameLabel}>{'> IDENTIFIED:'}</span>
-          <h1 className={styles.name}>
-            <span className={styles.nameFirst}>{data.name.first}</span>
-            <GlitchText text={data.name.last} />
-          </h1>
-        </div>
+        <h1 className={styles.name}>
+          <span className={styles.nameFirst}>{data.name.first}</span>
+          <br />
+          <GlitchText text={data.name.last} />
+        </h1>
 
         <p className={styles.role}>
           <TypedRole />
@@ -121,10 +125,11 @@ export default function Hero() {
         <div className={styles.actions}>
           <a href="#projects" className={styles.btnPrimary}
             onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}>
-            <span className={styles.btnPrefix}>./</span>view_projects.sh
+            View My Work
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
           <a href="mailto:amirmuhammadmarvi@gmail.com" className={styles.btnSecondary}>
-            <span className={styles.btnPrefix}>ssh</span> get_in_touch
+            Get In Touch
           </a>
         </div>
 
@@ -132,7 +137,7 @@ export default function Hero() {
           {data.stats.map(s => (
             <div key={s.label} className={styles.stat}>
               <span className={styles.statVal}>{s.value}</span>
-              <span className={styles.statLabel}>// {s.label}</span>
+              <span className={styles.statLabel}>{s.label}</span>
             </div>
           ))}
         </div>
@@ -140,7 +145,7 @@ export default function Hero() {
 
       <div className={styles.scroll}>
         <div className={styles.scrollLine} />
-        <span className={styles.scrollText}>scroll</span>
+        <span className={styles.scrollText}>Scroll</span>
       </div>
     </section>
   )

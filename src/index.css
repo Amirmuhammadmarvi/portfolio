@@ -1,26 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #000000;
-  --bg2:      #030603;
-  --surface:  #060b06;
-  --surface2: #0a120a;
-  --border:   #0f1f0f;
-  --border2:  #1a361a;
-  --accent:   #00ff41;
-  --accent2:  #00cc33;
-  --accent3:  #ff003c;
-  --text:     #c8ffc8;
-  --muted:    #2a5a2a;
-  --muted2:   #4a8a4a;
+  --bg:       #04080a;
+  --bg2:      #060d0f;
+  --surface:  #0a1418;
+  --surface2: #0f1c22;
+  --border:   #132028;
+  --border2:  #1e3040;
+  --accent:   #00e676;
+  --accent2:  #00bcd4;
+  --accent3:  #ff1744;
+  --text:     #ddeee8;
+  --muted:    #3a6050;
+  --muted2:   #6a9080;
   --display:  'Bebas Neue', sans-serif;
   --body:     'DM Sans', sans-serif;
-  --mono:     'Share Tech Mono', monospace;
+  --mono:     'JetBrains Mono', monospace;
   --ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --glow:     0 0 20px rgba(0,255,65,0.4);
-  --glow-sm:  0 0 8px rgba(0,255,65,0.3);
+  --glow:     0 0 24px rgba(0,230,118,0.3);
+  --glow-sm:  0 0 10px rgba(0,230,118,0.2);
 }
 
 html { scroll-behavior: smooth; font-size: 16px; }
@@ -28,41 +28,27 @@ html { scroll-behavior: smooth; font-size: 16px; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--mono);
+  font-family: var(--body);
   line-height: 1.6;
   overflow-x: hidden;
   cursor: none;
 }
 
-/* CRT scanlines overlay */
+/* subtle noise texture */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
-  );
+  background:
+    radial-gradient(ellipse 70% 50% at 85% 15%, rgba(0,230,118,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 10% 85%, rgba(0,188,212,0.03) 0%, transparent 60%);
   pointer-events: none;
-  z-index: 9998;
-}
-
-/* Vignette */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
-  pointer-events: none;
-  z-index: 9997;
+  z-index: 0;
 }
 
 ::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: var(--accent2); }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); box-shadow: var(--glow); }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-::selection { background: rgba(0,255,65,0.25); color: #000; }
+::selection { background: rgba(0,230,118,0.2); color: var(--text); }
