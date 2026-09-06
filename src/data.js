@@ -78,7 +78,7 @@ export const data = {
       description: 'A modular, CLI-based tool for detecting XSS and SQL Injection vulnerabilities by injecting payloads into URL parameters and analyzing HTTP responses.',
       highlights: [
         'Payload injection engine testing every URL parameter against 30+ real-world XSS and SQLi attack strings',
-        'XSS detection via response reflection; SQLi via database error signature matching across MySQL, PostgreSQL, MSSQL, and Oracle',
+        'XSS detection via response reflection; SQLi via database error signature matching across MySQL, PostgreSQL, MSSQL, SQLite, and Oracle',
         'Modular architecture across 4 independent components for easy extension with new vulnerability types',
         'Automatic JSON report generation with timestamps for audit trails',
         'Validated with Burp Suite Repeater to confirm vulnerability behavior and reduce false positives',
