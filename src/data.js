@@ -1,8 +1,8 @@
 export const data = {
   name: { first: 'Amir Mohammad', last: 'Marwi' },
-  title: 'AI Automation Engineer',
-  tagline: 'AI Agents · Automation · Security',
-  summary: 'Engineer who builds practical AI-powered automation. I work across Python, LLM APIs, and tool-calling AI agents, backed by a strong foundation in networking, Linux, and security. I turn ideas into working systems — most recently an autonomous AI agent that triages security data from end to end.',
+  title: 'Offensive Security & Networking',
+  tagline: 'Penetration Testing · Network Security · Python',
+  summary: 'Computer science student and former network engineer working in offensive security. I focus on penetration testing, vulnerability assessment, and network hardening, backed by production experience configuring MikroTik and Cisco infrastructure. I build my own tooling in Python — most recently a modular web vulnerability scanner and an agent that triages scan findings.',
   location: 'Messina, Italy',
   email: 'amirmuhammadmarvi@gmail.com',
   phone: '+39 351 653 9693',
@@ -11,7 +11,7 @@ export const data = {
 
   stats: [
     { value: '3', label: 'Projects Built' },
-    { value: 'AI', label: 'Agents & Tooling' },
+    { value: '8', label: 'Cisco Certificates' },
     { value: '1+', label: 'Years Experience' },
     { value: '3', label: 'Languages Spoken' },
   ],

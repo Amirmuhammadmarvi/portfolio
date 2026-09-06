@@ -20,17 +20,17 @@ export default function About() {
         <div className={styles.left}>
           <Reveal>
             <p className={styles.p}>
-              I'm an <strong>engineer who builds AI-powered automation</strong>. I work across Python, LLM APIs, and tool-calling AI agents — turning requirements into working systems — backed by a strong foundation in networking, Linux, and security.
+              I'm a <strong>computer science student working in offensive security</strong>. I test and harden systems across penetration testing, vulnerability assessment, and network defense — backed by a year of production networking experience.
             </p>
           </Reveal>
           <Reveal delay={100}>
             <p className={styles.p}>
-              Currently pursuing a <strong>Bachelor's in Data Analysis</strong> at the University of Messina while building my portfolio around <strong>AI agents and automation</strong>. My latest project is an autonomous agent that triages security data using LLM tool-calling.
+              Currently pursuing a <strong>Bachelor's in Data Analysis</strong> at the University of Messina while building my portfolio around <strong>offensive security and network hardening</strong>. I hold eight Cisco Networking Academy certificates, including Ethical Hacker.
             </p>
           </Reveal>
           <Reveal delay={150}>
             <p className={styles.p}>
-              I also bring real-world experience deploying and securing MikroTik and Cisco infrastructure in production, plus hands-on offensive-security skills from personal labs — a combination that lets me build automation that's both practical and secure.
+              I also bring real-world experience deploying and securing MikroTik and Cisco infrastructure in production, plus hands-on offensive-security work in isolated labs — a combination that lets me find real issues and explain how to fix them.
             </p>
           </Reveal>
 

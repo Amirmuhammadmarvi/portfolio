@@ -9,7 +9,7 @@ function GlitchText({ text }) {
 }
 
 function TypedRole() {
-  const roles = ['AI Automation Engineer', 'AI Agent Developer', 'Python Developer', 'Security Engineer']
+  const roles = ['Offensive Security Engineer', 'Penetration Tester', 'Network Engineer', 'Python Developer']
   const [idx, setIdx] = useState(0)
   const [displayed, setDisplayed] = useState('')
   const [deleting, setDeleting] = useState(false)
