@@ -33,7 +33,7 @@ export const data = {
       category: 'Security',
       icon: '🛡',
       color: 'var(--accent3)',
-      items: ['Vulnerability Assessment', 'Penetration Testing', 'Burp Suite', 'OWASP Top 10', 'XSS / SQLi', 'Firewall Hardening', 'CVE Analysis', 'PortSwigger Academy'],
+      items: ['Vulnerability Assessment', 'Penetration Testing', 'Burp Suite', 'OWASP Top 10', 'XSS / SQLi', 'Firewall Hardening', 'CVE Analysis'],
     },
     {
       category: 'Networking',
