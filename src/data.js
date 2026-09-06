@@ -136,10 +136,16 @@ export const data = {
   ],
 
   certifications: [
+    { icon: '🎯', name: 'Ethical Hacker — Cisco Networking Academy', sub: 'Issued Aug 2026 · Penetration testing end to end: reconnaissance, scanning, vulnerability analysis, exploitation, and reporting.' },
+    { icon: '🛡️', name: 'Junior Cybersecurity Analyst Career Path — Cisco Networking Academy', sub: 'Issued Aug 2026 · Passed the full career path exam covering all six courses below; verifies readiness for CCST Cybersecurity.' },
+    { icon: '🧭', name: 'Cyber Threat Management — Cisco Networking Academy', sub: 'Issued Aug 2026 · Cybersecurity governance, risk management, and managing and responding to security threats.' },
+    { icon: '🛰', name: 'Network Defense — Cisco Networking Academy', sub: 'Issued Aug 2026 · Monitoring and protecting a network, evaluating security alerts, and applying defensive techniques.' },
+    { icon: '💻', name: 'Endpoint Security — Cisco Networking Academy', sub: 'Issued Aug 2026 · Securing end-user devices and defending networks at the edge, including endpoint protection and threat mitigation.' },
+    { icon: '🔧', name: 'Networking Devices and Initial Configuration — Cisco Networking Academy', sub: 'Issued Aug 2026 · Router and switch setup, basic device management, and foundational network configuration.' },
+    { icon: '🌐', name: 'Networking Basics — Cisco Networking Academy', sub: 'Issued Aug 2026 · How networks operate, network devices, IP addressing, and the TCP/IP protocol suite.' },
+    { icon: '🔐', name: 'Introduction to Cybersecurity — Cisco Networking Academy', sub: 'Issued Aug 2026 · Core security concepts including confidentiality, integrity and availability, common attack types, and malware.' },
     { icon: '🤖', name: 'AI Agents & Automation', sub: 'Building AI agents with LLM tool-calling and prompt engineering; currently learning LangChain, n8n, and RAG.' },
-    { icon: '🏆', name: 'CEH — Certified Ethical Hacker', sub: 'Self-study · Covering penetration testing methodology, vulnerability analysis, and common attack techniques.' },
-    { icon: '🔬', name: 'PortSwigger Web Security Academy', sub: 'Completed Web Cache Deception lab using Burp Suite in a hands-on environment.' },
-    { icon: '🌐', name: 'MikroTik & Cisco Networking', sub: 'Practical experience from real-world configuration of routers and switches in production environments.' },
+    { icon: '📡', name: 'MikroTik & Cisco Networking', sub: 'Practical experience from real-world configuration of routers and switches in production environments.' },
     { icon: '🐧', name: 'Linux Administration', sub: 'Hands-on experience with CLI, system administration tasks, and basic security hardening.' },
   ],
 
